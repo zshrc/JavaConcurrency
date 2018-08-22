@@ -87,6 +87,22 @@ private volatile boolean shouldRun = true;
 
 ## Synchronize
 
+<b> Synchronized method</b>
+```Java
+public synchronized void increment(){ i++;}
+```
+
+<b> Intrinsic lock </b>
+Every object has an intrinsic lock associated with it. Each thread that needs to exclusively and consistently access to an object's field has to acquire this lock before accessing them and release intrinsic lock when it's done with them.
+```Java
+public void addName(String name) {
+    synchronized(this) {
+        lastName = name;
+        nameCount++;
+    }
+    nameList.add(name);
+}
+```
 
 ## Join
 
