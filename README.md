@@ -103,6 +103,11 @@ public void addName(String name) {
     nameList.add(name);
 }
 ```
+<b> Static class</b>
+In the case that a static method has a synchronized keyword, the thread actually acquires the class object associated with this Class. Therefore access to a class's static fields is controlled by a lock that's distinct from the lock for any instance of a class.
+
+<b> Reentrant Synchronization </b>
+A thread cannot acquire lock owned by another thread, but it can acquire the lock it already owns. Allowing a thread to acquire a lock more than once enables reentrant synchronization.
 
 ## Join
 
