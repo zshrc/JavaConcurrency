@@ -103,12 +103,42 @@ public void addName(String name) {
     nameList.add(name);
 }
 ```
-<b> Static class</b>
+<b> Static class</b>  
 In the case that a static method has a synchronized keyword, the thread actually acquires the class object associated with this Class. Therefore access to a class's static fields is controlled by a lock that's distinct from the lock for any instance of a class.
 
-<b> Reentrant Synchronization </b>
+<b> Reentrant Synchronization </b>  
 A thread cannot acquire lock owned by another thread, but it can acquire the lock it already owns. Allowing a thread to acquire a lock more than once enables reentrant synchronization.
 
+## ThreadPool
+
+First, understand Executor and Executors:
+
+<b>Executor</b> (interface) executes submitted input runnable: ```void execute(Runnable command)```  
+<b>ExecutorService</b> (interface) extends Executor interface, provides method to manage termination and return a Future object for tracking one or more asynchronous tasks.  
+<b>Executors</b> factory and utility methods for Executor: ```Executors.newFixedThreadPool(int nThreads)```  
+
+Example:
+```Java
+class App {
+    public static void main(Stringp[] args) {
+    
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < 5; i++) {
+            executor.submit(new Runnable() {});
+        }
+        executor.shutdown();
+        System.out.println("All tasks submitted.");
+        
+        try {
+            executor.awaitTermination(1, TimeUnit.DAYS);
+        } catch (InterruptedException e) {
+        }
+        
+        System.out.println("All tasks completed.");
+    }
+}
+
+```
 ## Join
 
 
