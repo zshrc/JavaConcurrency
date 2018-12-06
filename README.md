@@ -139,6 +139,39 @@ class App {
 }
 
 ```
+## CountdownLatch
+An synchronization aid that allows one or more threads waits for a set of operations performed by other threads completes.
+
+A CountdownLatch initializes with a <i>given</i> count; <i>await</i> block until the current count reaches zero after <i>countDown()</i>, after which all threads are released and any subsequent operations of await return immediately.
+
+```Java
+Class Process {
+    private CountdownLatch latch;
+    
+    public Processor(CountdownLatch latch) {
+        this.latch = latch;
+    }
+    public void process() throws InterruptedException {
+        System.out.println("Submitted");
+        Thread.sleep(3000);
+        latch.countDown();
+     }
+ }
+
+Class app {
+    public static void main(String[] args) throw InterruptedException {
+        CountdownLatch latch = new CountdownLatch(3);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        for (int i = 0; i < 3; i++) {
+            executor.submit(new Processor(latch);
+        }
+        latch.await();
+        System.out.println("Finished");
+    }
+}
+
+```
+
 ## Join
 
 
