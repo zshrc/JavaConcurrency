@@ -173,6 +173,39 @@ Class app {
 ```
 
 ## Join
+Allows one thread to wait for completion of another. If ```t``` is a thread object whose Thread is currently running, t.join causes current thread pause until t's thread terminates.
 
+```
+public class App {
+    private BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(10);
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new Runnable() {
+            produce();
+        }
+        Thread t2 = new Thread(new Runnable() {
+            consume();
+        }
+        
+        t1.start();
+        t2.start();
+        
+        t1.join();
+        t2.join();
+    }
+    
+    public static void produce() {
+        while(true) {
+            queue.put(new Random().nextInt(100));
+        }
+     }
+     
+     public static void consume() {
+        while(true) {
+            if (new Random().nextInt(10) == 0) {
+                queue.take();
+            }
+        }
+     }
+}
 
 ## Wait and Notify
