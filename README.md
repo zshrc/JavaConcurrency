@@ -210,7 +210,7 @@ public class App {
 ```
 
 ## Wait and Notify
-```wait()``` it causes one thread to wait until another thread invokes ```notify()``` or ```notifyAll()``` method for this object. 
+```wait()``` it causes one thread to wait until another thread invokes ```notify()``` or ```notifyAll()``` method for this object. It doesn't consume a lot of system resources unlike while loop checking for a flag. You can only call it within ```synchronized``` lock block. ```notify()``` can only be called within a synchronized block. ```notify``` does not relinquish the lock by itself so you want to relinguish the lock imediately after notify is called; otherwise this thread will keep holding the lock and the other thread won't be waken up until this thread is done.
 
 ```
 public class Process {
@@ -223,12 +223,14 @@ public class Process {
     }
         
     public void consume() {
+        Scanner scanner = new Scanner(System.in);
         Thread.sleep(2000);
         synchronized(this) {
             System.out.println("waiting for press key");
-            Scanner.nextLine();
+            scanner.nextLine();
             System.out.println("key pressed");
             notify();
+            // if we put a Thread.sleep(5000), the other thread cannot resume until 5 seconds later
         }
     }
 }
