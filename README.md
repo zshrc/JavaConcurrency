@@ -210,3 +210,26 @@ public class App {
 ```
 
 ## Wait and Notify
+```wait()``` it causes one thread to wait until another thread invokes ```notify()``` or ```notifyAll()``` method for this object. 
+
+```
+public class Process {
+    public void produce() {
+        synchronized(this) {
+            System.out.println("starting producer");
+            wait();
+            System.out.println("resumed");
+        }
+    }
+        
+    public void consume() {
+        Thread.sleep(2000);
+        synchronized(this) {
+            System.out.println("waiting for press key");
+            Scanner.nextLine();
+            System.out.println("key pressed");
+            notify();
+        }
+    }
+}
+            
