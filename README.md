@@ -234,4 +234,41 @@ public class Process {
         }
     }
 }
-            
+```
+## Wait and Notify in an producer/consumer example
+
+```
+class Procedure {
+    LinkedList<Integer> queue = new LinkedList<>();
+    Object lock = new Object();
+    public void produce() {
+        int value = 0;
+        while(true) {
+            synchronized(lock) {
+                while (queue.size() == LIMIT) {
+                    lock.wait();
+                }
+                queue.add(value++);
+                lock.notify();
+            }
+        }
+    }
+    
+    public void consume() {
+        while(true) {
+            synchronized(lock) {
+                while(queue.size() == 0) {
+                    lock.wait();
+                }
+                queue.removeFirst();
+                lock.notify();
+            }
+        }
+    }
+
+}
+
+```
+Why there is a while loop check for queue size? Check answer here: https://stackoverflow.com/questions/1038007/why-should-wait-always-be-called-inside-a-loop
+
+Basically it prevents spurious thread from calling notify() and causing array OutOfIndex error.
