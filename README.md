@@ -273,3 +273,77 @@ class Procedure {
 Why there is a while loop check for queue size? Check answer here: https://stackoverflow.com/questions/1038007/why-should-wait-always-be-called-inside-a-loop
 
 Basically it prevents spurious thread from calling notify() and causing array OutOfIndex error.
+
+## Re-entrantLock
+```ReentrantLock``` is similar to intrinsic lock, with extended capability. A ReentrantLock is unstructured, unlike synchronized constructs -- i.e. you don't need to use a block structure for locking and can even hold a lock across methods. An example:
+
+```
+public Condition newCondition()
+```
+Returns a Condition instance for use with this Lock instance.
+The returned Condition instance supports the same usages as do the Object monitor methods (wait, notify, and notifyAll) when used with the built-in monitor lock.
+
+1. If this lock is not held when any of the Condition waiting or signalling methods are called, then an IllegalMonitorStateException is thrown.
+2. When the condition waiting methods are called the lock is released and, before they return, the lock is reacquired and the lock hold count restored to what it was when the method was called.
+3. If a thread is interrupted while waiting then the wait will terminate, an InterruptedException will be thrown, and the thread's interrupted status will be cleared.
+4. Waiting threads are signalled in FIFO order.
+5. The ordering of lock reacquisition for threads returning from waiting methods is the same as for threads initially acquiring the lock, which is in the default case not specified, but for fair locks favors those threads that have been waiting the longest.
+
+```
+private ReentrantLock lock;
+
+public void foo() {
+  ...
+  lock.lock();
+  ...
+}
+
+public void bar() {
+  ...
+  lock.unlock();
+  ...
+}
+```
+
+```
+class Runner {
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition cond = lock.newCondition();
+    private count = 0;
+
+    public imcrement() {
+        for (int i = 0; i < 10000; i++) {
+            count++;
+       }
+    }
+    
+    public void thread1() {
+        lock.lock();
+        System.out.println("Waiting...");
+        cond.await(); // hand over the lock
+        
+        try {
+            imcrement();
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void thread2() {
+        Thread.sleep(1000);
+        lock.lock();
+        System.out.println("Press the enter key");
+        new Scanner(System.in).nextLine();
+        System.out.println("get the key");
+        
+        try {
+            increment();
+            cond.signal();  // equivalent to notify()
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+## Semaphore
