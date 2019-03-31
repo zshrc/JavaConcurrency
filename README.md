@@ -347,3 +347,47 @@ class Runner {
 ```
 
 ## Semaphore
+A counting semaphore. Conceptually, a Semaphore maintains a set of permits. Each acquire blocks until a permis is available, and then takes it; each release() adds a permit, potentially releases a blocking acquirer. 
+
+Semaphore is often used to restrict the number threads can acquire to access some resources.
+
+```
+class Connection {
+    private Connection instance = new Connection();
+    private Semaphore semaphore = new Semaphore(10);
+    private int connection = 10;
+    
+    private Connection() {}
+    public static Connection getInstance() { return instance; }
+    public void connect() {
+        semaphore.acquire();
+        try{
+            synchronized(this) {
+                connection++;
+                System.out.println("Current connections: " + connections);
+            }
+            Thread.sleep(1000);
+            synchronized(this) {
+                connection--;
+            }
+        } finally {
+            semaphore.release();
+        }
+    }
+}
+
+class App {
+    public static void main(String[] args) {
+        ExecutorService service = ExecutorService.newCachedThreadPool();
+        for (int i = 0; i < 200; i++) {
+            service.submit(new Runnable() {
+                @Override
+                public void run() {
+                    Connection.getInstance().connect();
+                }
+            }
+        }
+        executor.shutdown();
+        executor.awaitTermination(1, TimeUnit.DAYS);
+    }
+}
