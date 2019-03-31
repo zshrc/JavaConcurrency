@@ -354,7 +354,7 @@ Semaphore is often used to restrict the number threads can acquire to access som
 ```
 class Connection {
     private Connection instance = new Connection();
-    private Semaphore semaphore = new Semaphore(10);
+    private Semaphore semaphore = new Semaphore(10, true);
     private int connection = 10;
     
     private Connection() {}
