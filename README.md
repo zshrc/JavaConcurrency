@@ -211,7 +211,7 @@ public class App {
 ```
 
 ## Wait and Notify
-```wait()``` it causes one thread to wait until another thread invokes ```notify()``` or ```notifyAll()``` method for this object. It doesn't consume a lot of system resources unlike while loop checking for a flag. You can only call it within ```synchronized``` lock block. ```notify()``` can only be called within a synchronized block. ```notify``` does not relinquish the lock by itself so you want to relinguish the lock imediately after notify is called; otherwise this thread will keep holding the lock and the other thread won't be waken up until this thread is done.
+```wait()``` it causes one thread to wait until another thread invokes ```notify()``` or ```notifyAll()``` method for this object. It doesn't consume a lot of system resources unlike while loop checking for a flag. <b>You can only call it within ```synchronized``` lock block</b>. ```notify()``` can only be called within a synchronized block. ```notify``` does not relinquish the lock by itself so you want to relinguish the lock imediately after notify is called; otherwise this thread will keep holding the lock and the other thread won't be waken up until this thread is done.
 
 ```
 public class Process {
