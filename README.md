@@ -167,6 +167,7 @@ Class app {
             executor.submit(new Processor(latch);
         }
         latch.await();
+        //if we want to add timeout latch.await(3, TimeUnit.SECONDS);
         System.out.println("Finished");
     }
 }
